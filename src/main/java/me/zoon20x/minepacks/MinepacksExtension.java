@@ -1,11 +1,13 @@
 package me.zoon20x.minepacks;
 
+import at.pcgamingfreaks.Minepacks.Bukkit.API.MinepacksPlugin;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -27,6 +29,11 @@ public class MinepacksExtension extends PlaceholderExpansion {
         return "1.0";
     }
 
+    @Override
+    public @NotNull String getRequiredPlugin() {
+        return "minepacks";
+    }
+
     public YamlConfiguration cache;
 
     public String onPlaceholderRequest(Player p, String arg) {
@@ -42,16 +49,16 @@ public class MinepacksExtension extends PlaceholderExpansion {
             }
             switch (args[0].toLowerCase(Locale.ROOT)) {
                 case "backpack_contents":
-                    return Arrays.toString(MinepacksWrapper.getMinepacks().getBackpackCachedOnly(plr).getInventory().getContents());
+                    return Arrays.toString(getMinepacks().getBackpackCachedOnly(plr).getInventory().getContents());
                 case "backpack_size":
-                    return String.valueOf(MinepacksWrapper.getMinepacks().getBackpackCachedOnly(plr).getInventory().getSize());
+                    return String.valueOf(getMinepacks().getBackpackCachedOnly(plr).getInventory().getSize());
                 case "isblocked":
                     if(args.length < 3) {
                         return "Usage: %minepacks_isblocked item amount% | %minepacks_isblocked AIR 1%";
                     }
                     String blocked = args[1];
                     String amount = args[2];
-                    return MinepacksWrapper.getMinepacks().getItemFilter().isItemBlocked(new ItemStack(Material.getMaterial(blocked), Integer.parseInt(amount))) ? "Yes" : "No";
+                    return getMinepacks().getItemFilter().isItemBlocked(new ItemStack(Material.getMaterial(blocked), Integer.parseInt(amount))) ? "Yes" : "No";
                 case "get":
                     if(args[0].equalsIgnoreCase("get")) {
                         if(args.length < 3) {
@@ -74,5 +81,14 @@ public class MinepacksExtension extends PlaceholderExpansion {
         } catch (NoClassDefFoundError e) {
             return "Minepacks not found!";
         }
+    }
+
+    public MinepacksPlugin getMinepacks() {
+        Plugin bukkitPlugin = Bukkit.getPluginManager().getPlugin("Minepacks");
+        if(!(bukkitPlugin instanceof MinepacksPlugin)) {
+            // Do something if Minepacks is not available
+            return null;
+        }
+        return (MinepacksPlugin) bukkitPlugin;
     }
 }
