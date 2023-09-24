@@ -1,6 +1,7 @@
 package me.zoon20x.minepacks;
 
 import at.pcgamingfreaks.Minepacks.Bukkit.API.MinepacksPlugin;
+import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -34,14 +35,13 @@ public class MinepacksExtension extends PlaceholderExpansion {
         return "minepacks";
     }
 
-    public YamlConfiguration cache;
 
     public String onPlaceholderRequest(Player p, String arg) {
         try {
 
             String[] args = arg.split(" ");
             Player plr = p;
-            if(args.length > 2 && !args[0].equalsIgnoreCase("get")) {
+            if(args.length > 2) {
                 plr = Bukkit.getPlayer(args[1]);
             }
             if(plr == null) {
@@ -58,23 +58,7 @@ public class MinepacksExtension extends PlaceholderExpansion {
                     }
                     String blocked = args[1];
                     String amount = args[2];
-                    return getMinepacks().getItemFilter().isItemBlocked(new ItemStack(Material.getMaterial(blocked), Integer.parseInt(amount))) ? "Yes" : "No";
-                case "get":
-                    if(args[0].equalsIgnoreCase("get")) {
-                        if(args.length < 3) {
-                            return "Usage: %minepacks_get config path% | %minepacks_set configname BackpackTitle%";
-                        }
-                        String configname = args[1];
-
-                        String path = args[2];
-
-                        if(cache == null) {
-                            File file = new File(Bukkit.getServer().getWorldContainer() + "/plugins/Minepacks/" + configname + ".yml");
-                            cache = YamlConfiguration.loadConfiguration(file);
-                        }
-                        Object value = cache.get(path);
-                        return String.valueOf(value);
-                    }
+                    return getMinepacks().getItemFilter().isItemBlocked(new ItemStack(Material.getMaterial(blocked), Integer.parseInt(amount))) ? PlaceholderAPIPlugin.booleanTrue() : PlaceholderAPIPlugin.booleanFalse();
                 default:
                     return "Invalid placeholder";
             }
