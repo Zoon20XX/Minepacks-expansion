@@ -41,8 +41,8 @@ public class MinepacksExtension extends PlaceholderExpansion {
 
             String[] args = arg.split(" ");
             Player plr = p;
-            if(args.length > 2) {
-                plr = Bukkit.getPlayer(args[1]);
+            if(args.length >= 2) {
+                plr = Bukkit.getPlayer(args[args.length - 1]);
             }
             if(plr == null) {
                 return "Unknown player";
@@ -54,7 +54,7 @@ public class MinepacksExtension extends PlaceholderExpansion {
                     return String.valueOf(getMinepacks().getBackpackCachedOnly(plr).getInventory().getSize());
                 case "isblocked":
                     if(args.length < 3) {
-                        return "Usage: %minepacks_isblocked item amount% | %minepacks_isblocked AIR 1%";
+                        return "Usage: %minepacks_isblocked item amount PLAYER% | %minepacks_isblocked AIR 1 Zoon20x%";
                     }
                     String blocked = args[1];
                     String amount = args[2];
