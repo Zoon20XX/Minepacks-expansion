@@ -45,7 +45,7 @@ public class MinepacksExtension extends PlaceholderExpansion {
                 plr = Bukkit.getPlayer(args[args.length - 1]);
             }
             if(plr == null) {
-                return "Unknown player";
+                plr = p;
             }
             switch (args[0].toLowerCase(Locale.ROOT)) {
                 case "backpack_contents":
