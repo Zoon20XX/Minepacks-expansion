@@ -27,7 +27,7 @@ public class MinepacksExtension extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "1.0.5";
+        return "1.0.7";
     }
 
     @Override
@@ -50,7 +50,7 @@ public class MinepacksExtension extends PlaceholderExpansion {
                 return Arrays.toString(getMinepacks().getBackpackCachedOnly(plr).getInventory().getContents());
             case "backpack_size":
                 return String.valueOf(getMinepacks().getBackpackCachedOnly(plr).getInventory().getSize());
-            case "backpack_openn":
+            case "backpack_open":
                 getMinepacks().getBackpackCachedOnly(plr).open(plr, false);
                 return "Opened!";
             case "backpack_clear":
