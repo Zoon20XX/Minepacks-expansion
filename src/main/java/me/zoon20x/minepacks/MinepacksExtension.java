@@ -27,7 +27,7 @@ public class MinepacksExtension extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "1.0.4";
+        return "1.0.5";
     }
 
     @Override
@@ -37,33 +37,34 @@ public class MinepacksExtension extends PlaceholderExpansion {
 
 
     public String onPlaceholderRequest(Player p, String arg) {
-        try {
-
-            String[] args = arg.split(" ");
-            Player plr = p;
-            if(args.length >= 2) {
-                plr = Bukkit.getPlayer(args[args.length - 1]);
-            }
-            if(plr == null) {
-                plr = p;
-            }
-            switch (args[0].toLowerCase(Locale.ROOT)) {
-                case "backpack_contents":
-                    return Arrays.toString(getMinepacks().getBackpackCachedOnly(plr).getInventory().getContents());
-                case "backpack_size":
-                    return String.valueOf(getMinepacks().getBackpackCachedOnly(plr).getInventory().getSize());
-                case "isblocked":
-                    if(args.length < 3) {
-                        return "Usage: %minepacks_isblocked item amount PLAYER% | %minepacks_isblocked AIR 1 Zoon20x%";
-                    }
-                    String blocked = args[1];
-                    String amount = args[2];
-                    return getMinepacks().getItemFilter().isItemBlocked(new ItemStack(Material.getMaterial(blocked), Integer.parseInt(amount))) ? PlaceholderAPIPlugin.booleanTrue() : PlaceholderAPIPlugin.booleanFalse();
-                default:
-                    return "Invalid placeholder";
-            }
-        } catch (NoClassDefFoundError e) {
-            return "Minepacks not found!";
+        String[] args = arg.split(" ");
+        Player plr = p;
+        if(args.length >= 2) {
+            plr = Bukkit.getPlayer(args[args.length - 1]);
+        }
+        if(plr == null) {
+            plr = p;
+        }
+        switch (args[0].toLowerCase(Locale.ROOT)) {
+            case "backpack_contents":
+                return Arrays.toString(getMinepacks().getBackpackCachedOnly(plr).getInventory().getContents());
+            case "backpack_size":
+                return String.valueOf(getMinepacks().getBackpackCachedOnly(plr).getInventory().getSize());
+            case "backpack_openn":
+                getMinepacks().getBackpackCachedOnly(plr).open(plr, false);
+                return "Opened!";
+            case "backpack_clear":
+                getMinepacks().getBackpackCachedOnly(plr).clear();
+                return "Opened!";
+            case "isblocked":
+                if(args.length < 3) {
+                    return "Usage: %minepacks_isblocked item amount PLAYER% | %minepacks_isblocked AIR 1 Zoon20x%";
+                }
+                String blocked = args[1];
+                String amount = args[2];
+                return getMinepacks().getItemFilter().isItemBlocked(new ItemStack(Material.getMaterial(blocked), Integer.parseInt(amount))) ? PlaceholderAPIPlugin.booleanTrue() : PlaceholderAPIPlugin.booleanFalse();
+            default:
+                return "Invalid placeholder";
         }
     }
 
